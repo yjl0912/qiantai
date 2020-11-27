@@ -1,15 +1,12 @@
 <template>
-  <div>
-    <h1>我是footer</h1>
-  </div>
+  <div>Search...</div>
 </template>
 
 <script>
 export default {
-  name: 'Footer',
-}
+  name: "Search",
+};
 </script>
 
 <style lang="less" scoped>
-
 </style>
