@@ -1,20 +1,92 @@
 <template>
-  <div>
-    <h1>我是Header</h1>
-    <router-link to="/"> 我是Home组件</router-link><br/>
-     <router-link to='/login'>我是登录组件</router-link><br/>
-    <router-link to="/register">我是注册组件</router-link><br/> 
-   
+<div>
+ 
+  <div class="header-up"> 
+  <div class='header-left'>
+    <p >尚品汇欢迎您</p>
+    <p>
+    <span>请</span>
+    <router-link to="/login">登录</router-link>
+    <router-link to="/register">免费注册</router-link>
+    </p>
+  </div>
+  <div class="nav">
+    <a href="#">我的订单</a>
+    <a href="#">我的购物车</a>
+    <a href="#">我的尚品汇</a>
+    <a href="#">尚品汇会员</a>
+    <a href="#">企业采购</a>
+    <a href="#">关注尚品汇</a>
+    <a href="#">合作招商</a>
+    <a href="#">商家后台</a>
+  </div>
+  </div>
 
+
+
+
+   <div class="header-down">
+    <img src="./image/logo.png" alt=''/>
+  
+  <div class="search">
+    <input  type="text"  />
+    <button>搜索</button>
+  </div>
+ </div>
+   
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Header',
-}
+  name: "Header",
+};
 </script>
 
 <style lang="less" scoped>
+.header-up{
+  width: 1200px;
+  height: 30px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(234,234,234);
+}
+.header-left > p{
+  padding: 0 10px 0 0;
+  font: 12px/1.3 "Microsoft YaHei",Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+}
+
+.nav > a {
+  padding: 0 10px;
+  font-size: 12px;
+}
+.header-down{
+  width: 1200px;
+  height: 110.8px;
+  margin: 0,auto;
+  display: flex;
+  justify-content: space-between;
+}
+.header-down > img{
+  width: 175px;
+  height:56px;
+  margin: 25px 45px;
+}
+.search > input{
+  width: 490px;
+  height: 32px;
+  border: 2px solid rgb(234,74,54);
+}
+.search > button {
+  width: 68px;
+  height: 32px;
+  background-color: rgb(234,74,54);
+  font-size: 100%;
+  color: white;
+}
+.search{
+  display: felx;
+}
 
 </style>
