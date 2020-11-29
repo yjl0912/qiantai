@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>登录组件</p>
-    <button type="button" @click="login">登录</button>
+    <el-button type="success" @click="login">登录</el-button>
   </div>
 </template>
 

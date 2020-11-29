@@ -15,24 +15,26 @@
       </nav>
       <div class="sort">
         <div class="all-sort-list2">
-         <div class="item bo" v-for='item in category' :key= 'item.categoryId'>
+          <div class="item bo" v-for="item in category" :key="item.categoryId">
             <h3>
-              <a href="">{{item.categoryName}}</a>
+              <a href="">{{ item.categoryName }}</a>
             </h3>
             <div class="item-list clearfix">
               <div class="subitem">
-                <dl class="fore"
-                v-for='child in item.categoryChild'
-                :key="child.categoryId">
+                <dl
+                  class="fore"
+                  v-for="child in item.categoryChild"
+                  :key="child.categoryId"
+                >
                   <dt>
-                    <a href="">{{child.categoryName}}</a>
+                    <a href="">{{ child.categoryName }}</a>
                   </dt>
                   <dd>
-                    <em 
+                    <em
                       v-for="grandChild in child.categoryChild"
                       :key="grandChild.categoryId"
                     >
-                      <a href="">{{grandChild.categoryName }}</a>
+                      <a href="">{{ grandChild.categoryName }}</a>
                     </em>
                   </dd>
                 </dl>
@@ -46,26 +48,27 @@
 </template>
 
 <script>
-import {typenav} from '@api/typenav.js'
+import { typenav } from "@api/typenav.js";
 
 export default {
   name: "TypeNav",
-  data(){
-    return{
-      category:[]
-    }
+  data() {
+    return {
+      category: [],
+    };
   },
-  mounted(){
-      typenav()
-      .then((res)=>{
-        this.category = res
-        console.log(this.category)
+
+  mounted() {
+    typenav()
+      .then((res) => {
+        this.category = res.slice(0, 15);
+        console.log(this.category);
         // console.log(res)
       })
-      .catch((err)=>{
-        console.log(err)
-      })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 </script>
 
