@@ -15,28 +15,24 @@
       </nav>
       <div class="sort">
         <div class="all-sort-list2">
-          <div class="item bo">
+         <div class="item bo" v-for='item in category' :key= 'item.categoryId'>
             <h3>
-              <a href="">图书、音像、数字商品</a>
+              <a href="">{{item.categoryName}}</a>
             </h3>
             <div class="item-list clearfix">
               <div class="subitem">
-                <dl class="fore">
+                <dl class="fore"
+                v-for='child in item.categoryChild'
+                :key="child.categoryId">
                   <dt>
-                    <a href="">电子书</a>
+                    <a href="">{{child.categoryName}}</a>
                   </dt>
                   <dd>
-                    <em>
-                      <a href="">婚恋/两性</a>
-                    </em>
-                    <em>
-                      <a href="">文学</a>
-                    </em>
-                    <em>
-                      <a href="">经管</a>
-                    </em>
-                    <em>
-                      <a href="">畅读VIP</a>
+                    <em 
+                      v-for="grandChild in child.categoryChild"
+                      :key="grandChild.categoryId"
+                    >
+                      <a href="">{{grandChild.categoryName }}</a>
                     </em>
                   </dd>
                 </dl>
@@ -54,10 +50,17 @@ import {typenav} from '@api/typenav.js'
 
 export default {
   name: "TypeNav",
+  data(){
+    return{
+      category:[]
+    }
+  },
   mounted(){
       typenav()
       .then((res)=>{
-        console.log(res)
+        this.category = res
+        console.log(this.category)
+        // console.log(res)
       })
       .catch((err)=>{
         console.log(err)
