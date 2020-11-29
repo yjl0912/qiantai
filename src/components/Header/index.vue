@@ -1,119 +1,133 @@
 <template>
-<div>
- 
-  <div class="header-up"> 
-  <div class='header-left'>
-    <p >尚品汇欢迎您</p>
-    <p>
-    <span>请</span>
-    <router-link to="/login" class="graycolor">登录</router-link>
-    <router-link to="/register" class="graycolor">免费注册</router-link>
-    </p>
-  </div>
-  <div class="nav">
-    <a href="###">我的订单</a>
-    <a href="###">我的购物车</a>
-    <a href="###">我的尚品汇</a>
-    <a href="###">尚品汇会员</a>
-    <a href="###">企业采购</a>
-    <a href="###">关注尚品汇</a>
-    <a href="###">合作招商</a>
-    <a href="###">商家后台</a>
-  </div>
-  </div>
+  <div>
+    <div class="header-up">
+      <div class="header-left">
+        <p>尚品汇欢迎您</p>
+        <p>
+          <span>请</span>
+          <router-link to="/login" class="graycolor">登录</router-link>
+          <router-link to="/register" class="graycolor">免费注册</router-link>
+        </p>
+      </div>
+      <div class="nav">
+        <a href="###">我的订单</a>
+        <a href="###">我的购物车</a>
+        <a href="###">我的尚品汇</a>
+        <a href="###">尚品汇会员</a>
+        <a href="###">企业采购</a>
+        <a href="###">关注尚品汇</a>
+        <a href="###">合作招商</a>
+        <a href="###">商家后台</a>
+      </div>
+    </div>
+    <div class="header-down">
+      <router-link class="link" to="/">
+        <img src="./image/logo.png" alt="" />
+      </router-link>
 
-
-
-
-   <div class="header-down">
-    <img src="./image/logo.png" alt=''/>
-  
-  <div class="search">
-    <input  type="text"  />
-    <button>搜索</button>
-  </div>
- </div>
-   
+      <div class="search">
+        <input type="text" v-model="searchText" />
+        <button type="button" @click="search">搜索</button>
+      </div>
+    </div>
   </div>
 </template>
+
+
 
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      searchText: "",
+    };
+  },
+  methods: {
+    search() {
+      this.$router.push(
+        "/search" + (this.searchText ? `/${this.searchText}` : ""),
+        (res) => {console.log(res)},
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+  },
 };
 </script>
 
+
+
 <style lang="less" scoped>
-.header-up{
+.header-up {
   width: 1200px;
   height: 30px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  background-color: rgb(234,234,234);
+  background-color: rgb(234, 234, 234);
 }
-.header-left{
+.header-left {
   display: flex;
   height: 30px;
- 
-  
 }
-.header-left > p{
+.header-left > p {
   padding: 0 10px 0 0;
-  font: 12px/1.3 "Microsoft YaHei",Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+  font: 12px/1.3 "Microsoft YaHei", Tahoma, Helvetica, Arial, "\5b8b\4f53",
+    sans-serif;
   margin: 10px;
 }
-
 .nav > a {
   padding: 0 10px;
   font-size: 12px;
   line-height: 30px;
 }
-.graycolor , .nav > a{
-  color: rgb(116,116,116);
+.graycolor,
+.nav > a {
+  color: rgb(116, 116, 116);
   text-decoration: none;
   cursor: point;
 }
-.graycolor:hover , .nav > a:hover{
+.graycolor:hover,
+.nav > a:hover {
   text-decoration: underline;
   color: greenyellow;
 }
-.header-down{
+.header-down {
   width: 1200px;
   height: 110.8px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
 }
-.header-down > img{
+.header-down .link > img {
   width: 175px;
-  height:56px;
+  height: 56px;
   margin: 25px 45px;
 }
-.search > input{
+.search > input {
   width: 490px;
   height: 32px;
-  border: 3px solid rgb(234,74,54);
+  border: 3px solid rgb(234, 74, 54);
   margin: 36px 0 0 0;
 }
-.search > input:focus{
+.search > input:focus {
   outline: none;
 }
 .search > button {
   width: 68px;
   height: 40px;
-  background-color: rgb(234,74,54);
+  background-color: rgb(234, 74, 54);
   font-size: 12px;
   color: white;
   position: relative;
   top: 1px;
   left: -2px;
   outline: none;
- border-color: transparent;
- 
+  border-color: transparent;
 }
-.search{
+.search {
   display: felx;
 }
-
 </style>

@@ -15,15 +15,21 @@ const router = new VueRouter ({
         },
         {
             path:"/login",
-            component:Login
+            component:Login,
+            meta:{
+              isShow:true
+            }
 
         },
         {
             path:"/register",
-            component:Register
+            component:Register,
+            meta:{
+                isShow:true
+            }
         },
         {
-            path:"/search",
+            path:"/search/:searchText?",
             component:Search
         }
     ]

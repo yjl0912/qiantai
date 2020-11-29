@@ -2,17 +2,18 @@
   <div>
     <Header />
     <router-view></router-view>
-    <Footer />
+    <Footer v-if="!$route.meta.isShow" />
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
-import Footer from './components/Footer'
+import Footer from '@comps/Footer'
 export default {
   name:'App',
+  
   components:{
-     Header,
+    Header,
     Footer,
    
   }
