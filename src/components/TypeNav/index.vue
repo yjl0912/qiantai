@@ -1,8 +1,8 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container">
-      <h2 class="all">全部商品分类</h2>
+    <div class="container" @mouseleave="isSearchShow = false">
+      <h2 class="all" @mouseenter="isSearchShow = true">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,6 +13,7 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
+      <transition name = 'navtype'>
       <div class="sort" v-show="isHomeShow || isSearchShow">
         <div class="all-sort-list2" @click.prevent="addsearch">
           <div class="item bo" v-for="item in category" :key="item.categoryId">
@@ -61,6 +62,7 @@
           </div>
         </div>
       </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -75,7 +77,7 @@ export default {
     return {
       // category: [],
       isHomeShow:this.$route.path == "/",
-      isSearchShow:true,
+      isSearchShow:false,
     };
   },
    
@@ -121,6 +123,9 @@ export default {
 </script>
 
 <style  lang="less" scoped>
+
+
+      
 .type-nav {
   border-bottom: 2px solid #e1251b;
 
@@ -160,6 +165,16 @@ export default {
       position: absolute;
       background: #fafafa;
       z-index: 999;
+
+      // 一定要写在sort下面，否则权重不够没过渡效果
+      &.navtype-enter-active {
+        transition: height 0.5s;
+        overflow: hidden;
+      }
+      &.navtype-enter {
+        height: 0px;
+      }
+
 
       .all-sort-list2 {
         .item {
