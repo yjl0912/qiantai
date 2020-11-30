@@ -13,9 +13,11 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item bo" v-for="item in category" :key="item.categoryId">
+      <div class="sort" v-show="isHomeShow || isSearchShow">
+        <div class="all-sort-list2" @click="seturl">
+          <div class="item bo" 
+          v-for="item in category"
+           :key="item.categoryId">
             <h3>
               <a href="">{{ item.categoryName }}</a>
             </h3>
@@ -48,26 +50,46 @@
 </template>
 
 <script>
-import { typenav } from "@api/typenav.js";
+// import { typenav } from "@api/typenav.js"; 不用vuex
+import {mapState,mapActions} from  'vuex'
 
 export default {
   name: "TypeNav",
   data() {
     return {
-      category: [],
+      // category: [],
+      isHomeShow:this.$route.path == "/",
+      isSearchShow:false,
     };
   },
+   
+   computed:{
+     ...mapState({
+       category:(state)=>state.home.category
+     })
+   },
+   methods:{
+     ...mapActions(['getcategory']),
+     seturl(){
+       
+     }
+   },
 
   mounted() {
-    typenav()
-      .then((res) => {
-        this.category = res.slice(0, 15);
-        console.log(this.category);
-        // console.log(res)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    //不用vuex
+    // typenav()
+    //   .then((res) => {
+    //     this.category = res.slice(0, 15);
+    //     console.log(this.category);
+    //     // console.log(res)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+      this.getcategory()
+
+
+
   },
 };
 </script>
