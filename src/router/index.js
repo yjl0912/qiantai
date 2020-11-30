@@ -28,7 +28,7 @@ const router = new VueRouter ({
                 isShow:true
             }
         },
-        {
+        {   name:'search',
             path:"/search/:searchText?",
             component:Search
         }

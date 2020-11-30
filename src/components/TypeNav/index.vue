@@ -14,12 +14,16 @@
         <a href="###">秒杀</a>
       </nav>
       <div class="sort" v-show="isHomeShow || isSearchShow">
-        <div class="all-sort-list2" @click="seturl">
-          <div class="item bo" 
-          v-for="item in category"
-           :key="item.categoryId">
+        <div class="all-sort-list2" @click.prevent="addsearch">
+          <div class="item bo" v-for="item in category" :key="item.categoryId">
             <h3>
-              <a href="">{{ item.categoryName }}</a>
+              <a
+                href=""
+                :data-categoryName="item.categoryName"
+                :data-categoryId="item.categoryId"
+                :data-categoryType=1
+                >{{ item.categoryName }}</a
+              >
             </h3>
             <div class="item-list clearfix">
               <div class="subitem">
@@ -29,14 +33,26 @@
                   :key="child.categoryId"
                 >
                   <dt>
-                    <a href="">{{ child.categoryName }}</a>
+                    <a
+                      href=""
+                      :data-categoryName="child.categoryName"
+                      :data-categoryId="child.categoryId"
+                      :data-categoryType=2
+                      >{{ child.categoryName }}</a
+                    >
                   </dt>
                   <dd>
                     <em
                       v-for="grandChild in child.categoryChild"
                       :key="grandChild.categoryId"
                     >
-                      <a href="">{{ grandChild.categoryName }}</a>
+                      <a
+                        href=""
+                        :data-categoryName="grandChild.categoryName"
+                        :data-categoryId="grandChild.categoryId"
+                        :data-categoryType=3
+                        >{{ grandChild.categoryName }}</a
+                      >
                     </em>
                   </dd>
                 </dl>
@@ -59,7 +75,7 @@ export default {
     return {
       // category: [],
       isHomeShow:this.$route.path == "/",
-      isSearchShow:false,
+      isSearchShow:true,
     };
   },
    
@@ -70,8 +86,18 @@ export default {
    },
    methods:{
      ...mapActions(['getcategory']),
-     seturl(){
-       
+     addsearch(e){
+        const {categoryname,categoryid,categorytype} = e.target.dataset
+        console.log(categoryname)
+
+        const location ={
+          name:"search",
+          query:{
+            categoryName:categoryname,
+            [`category${categorytype}Id`]:categoryid
+          }
+        };
+        this.$router.push(location,()=>{},()=>{})
      }
    },
 
