@@ -89,7 +89,7 @@ export default {
      addsearch(e){
         const {categoryname,categoryid,categorytype} = e.target.dataset
         console.log(categoryname)
-
+        if(!categoryname) return
         const location ={
           name:"search",
           query:{
