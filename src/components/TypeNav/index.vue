@@ -99,6 +99,10 @@ export default {
             [`category${categorytype}Id`]:categoryid
           }
         };
+        const {searchText} = this.$route.params
+        if(searchText){
+          location.params = {searchText};
+        }
         this.$router.push(location,()=>{},()=>{})
      }
    },

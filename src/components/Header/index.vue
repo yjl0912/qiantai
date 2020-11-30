@@ -45,13 +45,21 @@ export default {
   },
   methods: {
     search() {
-      this.$router.push(
-        "/search" + (this.searchText ? `/${this.searchText}` : ""),
-        (res) => {console.log(res)},
-        (err) => {
-          console.log(err);
-        }
-      );
+    const {categoryName} = this.$route.query
+    const {searchText} =this;
+    const location ={
+      name:'search'
+    }
+     if(searchText){
+       location.params = {
+         searchText
+       }
+     }
+     if(categoryName){
+       location.query = this.$route.query
+     }
+    
+     this.$router.push(location)
     },
   },
 };
