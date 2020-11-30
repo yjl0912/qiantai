@@ -118,6 +118,9 @@ export default {
     //   .catch((err) => {
     //     console.log(err);
     //   });
+       if(this.category.length) return
+
+       
       this.getcategory()
 
 
