@@ -106,43 +106,45 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
-import Swiper, { Navigation, Pagination } from "swiper";
+import Swiper, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/swiper-bundle.min.css";
 
-Swiper.use([Navigation, Pagination]);
+Swiper.use([Navigation, Pagination, Autoplay]);
 
 export default {
   name: "ListContainer",
-  // data() {
-  //   return {
-  //     banners: [],
-  //   };
-  // },
-  methods: {
-    ...mapActions(["REQGETBANNERS1"]),
-  },
+
   computed: {
     ...mapState({
       banners: (state) => state.home.banners,
     }),
   },
+  methods: {
+    ...mapActions(["reqgetbanners"]),
+  },
+  watch: {
+    banners: () => {
+      console.log(111);
+    },
+  },
+  //有bug，computed必须要写methods上面
   async mounted() {
-    await this.REQGETBANNERS1();
-
-    // console.log(this.banners);
-
-    setTimeout(() => {
-      new Swiper(".swiper-container", {
-        loop: true,
-        pagination: {
-          el: ".swiper-pagination",
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-    }, 0);
+    await this.reqgetbanners();
+    console.log(this.banners);
+    this.$nextTick(() => {
+      setTimeout(() => {
+        new Swiper(".swiper-container", {
+          loop: true,
+          pagination: {
+            el: ".swiper-pagination",
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      }, 0);
+    });
   },
 };
 </script>

@@ -19,46 +19,45 @@
 </template>
 
 <script>
-import {mapState,mapActions} from 'vuex'
+import { mapState, mapActions } from "vuex";
 
-  import TypeNav from '@comps/TypeNav'
-  import Brand from './Brand/Brand'
-  import Floor from './Floor/Floor'
-  import Like from './Like/Like'
-  import ListContainer from './ListContainer/ListContainer'
-  import Rank from './Rank/Rank'
-  import TodayRecommend from './TodayRecommend/TodayRecommend'
-  export default {
-    name: 'Home',
-    //  data(){
-    //   return{
-    //    floors:[]
-    //   }
-    // },
-    methods:{
-      ...mapActions(["REQGETFLOORS"])
-    },
-    computed:{
-      ...mapState({
-        floors:(state)=>
-          state.home.floors
-        
-      })
-    },
-   async mounted(){
-      await  this.REQGETFLOORS()
+import TypeNav from "@comps/TypeNav";
+import Brand from "./Brand/Brand";
+import Floor from "./Floor/Floor";
+import Like from "./Like/Like";
+import ListContainer from "./ListContainer/ListContainer";
+import Rank from "./Rank/Rank";
+import TodayRecommend from "./TodayRecommend/TodayRecommend";
+export default {
+  name: "Home",
+  //  data(){
+  //   return{
+  //    floors:[]
+  //   }
+  // },
+  computed: {
+    ...mapState({
+      floors: (state) => state.home.floors,
+    }),
+  },
+  methods: {
+    ...mapActions(['reqgetfloors']),
+  },
+
+  async mounted() {
+    await this.reqgetfloors();
     //  console.log(this.floors)
-    },
-    components: {
-      Brand,
-      Floor,
-      Like,
-      ListContainer,
-      Rank,
-      TodayRecommend,
-      TypeNav
-    }
-  }
+  },
+  components: {
+    Brand,
+    Floor,
+    Like,
+    ListContainer,
+    Rank,
+    TodayRecommend,
+    TypeNav,
+  },
+};
 </script>
 
 <style lang="less" scoped>
