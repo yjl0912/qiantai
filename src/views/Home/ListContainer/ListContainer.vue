@@ -134,7 +134,7 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         new Swiper(".swiper-container", {
-          loop: true,
+          loop: true,//一直轮播
           pagination: {
             el: ".swiper-pagination",
           },
@@ -142,7 +142,10 @@ export default {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           },
-          autoplay:true
+          autoplay:{
+            delay:3000,
+            disableOnInteraction:false,// 当用户点击下一页，仍不会中断自动轮播
+          }
         });
       }, 0);
     });
