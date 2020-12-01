@@ -4,7 +4,7 @@ import router from './router'
 import './styles/reset.css'
 import './plugins/element.js'
 import store from './store/index'
-
+import './mock/mockServer'
 
 
 Vue.config.productionTip = false
