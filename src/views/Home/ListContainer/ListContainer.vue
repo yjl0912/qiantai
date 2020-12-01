@@ -142,6 +142,7 @@ export default {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           },
+          autoplay:true
         });
       }, 0);
     });
