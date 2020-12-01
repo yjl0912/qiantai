@@ -137,6 +137,7 @@ export default {
           loop: true,//一直轮播
           pagination: {
             el: ".swiper-pagination",
+            clickable:true,//点击小圆点选择页面，默认不可点击。设置小圆点可以点击，
           },
           navigation: {
             nextEl: ".swiper-button-next",
