@@ -52,7 +52,14 @@ export default {
     
       if (this.swiper) return; //如果有new过swiper了，就不在new了
       this.$nextTick(() => {
-        new Swiper(this.$refs.swiper, {
+        this.initswiper();
+        
+      });
+    },
+  },
+  methods: {
+    initswiper() {
+      this.swiper = new Swiper(this.$refs.swiper, {
         
         loop: true, //一直轮播
         autoplay: {
@@ -69,36 +76,13 @@ export default {
         },
         
       });
-        // this.initswiper;
-      });
     },
-  },
-  methods: {
-    // initswiper() {
-    //   this.swiper = new Swiper(this.$refs.swiper, {
-        
-    //     loop: true, //一直轮播
-    //     autoplay: {
-    //       delay: 3000,
-    //       disableOnInteraction: false, // 当用户点击下一页，仍不会中断自动轮播
-    //     },
-    //     pagination: {
-    //       el: ".swiper-pagination",
-    //        clickable: true, //点击小圆点选择页面，默认不可点击。设置小圆点可以点击，
-    //     },
-    //     navigation: {
-    //       nextEl: ".swiper-button-next",
-    //       prevEl: ".swiper-button-prev",
-    //     },
-        
-    //   });
-    // },
   },
   mounted() {
     //现在mounted没用了，功能是在watched里面做
-  // if (!this.carousellist.length) return;
+  if (!this.carousellist.length) return;
 
-  //   this.initSwiper();
+    this.initswiper();
 
   },
 };

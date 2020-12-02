@@ -14,11 +14,11 @@
     "carousellist|3": [
       {
         "id|+1": 1,
-        "imgUrl": "@image('200x200', '@color')"
+        "imgUrl": "@image('330x360', '@color')"
       }
     ],
     "recommendList|4": ["@image('200x200', '@color')"],
-    "bigImg": "@image('222x362', '@color')"
+    "bigImg": "@image('222x359', '@color')"
   }
 ]
 
