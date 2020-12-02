@@ -25,7 +25,7 @@ export default {
    
   },
   actions: {
-    async getProductList({ commit }, data = {}) {
+    async getProductList({ commit }, data ={}) {
       const productList = await reqGetProductList(data);
       commit("GET_PRODUCT_LIST", productList);
     },

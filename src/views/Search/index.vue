@@ -61,7 +61,7 @@
                   <div class="price">
                     <strong>
                       <em>¥</em>
-                      <i>{{goods.price}}</i>
+                      <i>{{ goods.price }}</i>
                     </strong>
                   </div>
                   <div class="attr">
@@ -69,7 +69,7 @@
                       target="_blank"
                       href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{goods.title}}</a
+                      >{{ goods.title }}</a
                     >
                   </div>
                   <div class="commit">
@@ -88,8 +88,6 @@
                   </div>
                 </div>
               </li>
-              
-                   
             </ul>
           </div>
           <!-- 分页器 -->
@@ -135,6 +133,27 @@ import TypeNav from "@comps/TypeNav";
 
 export default {
   name: "Search",
+  data() {
+    return {
+      options: {
+        category1Id: "", // 一级分类id
+        category2Id: "", // 二级分类id
+        category3Id: "",
+        categoryName: "",
+        keyword: "",
+        order: "",
+        pageNo: 1,
+        pageSize: 5,
+        props: [],
+        trademark: "",
+      },
+      // vscode小技巧：
+      //对多行添加相同的内容: 选中Alt+鼠标左键即可，按ESC退出
+      // Ctrl  +  [    //向左缩进
+
+      //Ctrl  +  ]    //向右缩进
+    };
+  },
   methods: {
     ...mapActions(["getProductList"]),
   },
@@ -142,15 +161,34 @@ export default {
     ...mapGetters(["goodsList"]),
   },
   // methods:{
-      
+
   // },
+  
+  mounted() {
+    const { searchText:keyword } = this.$route.params;
+    const {
+      categoryName,
+      category1Id,
+      category2Id,
+      category3Id,
+    } = this.$route.query;
+    console.log(this.$route.params,this.$route.query)
+    // const 后面的options虽然是在配置对象里，但不能用this.  因为const不能定义已经存在的变量（数据）
+    const options = {
+      ...this.options,
+      keyword,
+      categoryName,
+      category1Id,
+      category2Id,
+      category3Id,
+    };
+    this.options = options;
+    this.getProductList( options );
+  },
   components: {
     SearchSelector,
-    TypeNav
+    TypeNav,
   },
-  mounted(){
-    this.getProductList({})
-  }
 };
 </script>
 
