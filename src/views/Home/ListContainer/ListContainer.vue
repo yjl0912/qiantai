@@ -2,33 +2,8 @@
   <div class="list-container">
     <div class="sortList clearfix">
       <div class="center">
-        <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
-            </div> -->
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div> -->
-            <div
-              class="swiper-slide"
-              v-for="banner in banners"
-              :key="banner.id"
-            >
-              <img :src="banner.imgUrl" />
-            </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+      
+        <Carousel  :carousellist ='banners'/>
       </div>
       <div class="right">
         <div class="news">
@@ -105,11 +80,12 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import Carousel from '@comps/Carousel'
 
-import Swiper, { Navigation, Pagination, Autoplay } from "swiper";
-import "swiper/swiper-bundle.min.css";
+// import Swiper, { Navigation, Pagination, Autoplay } from "swiper";
+// import "swiper/swiper-bundle.min.css";
 
-Swiper.use([Navigation, Pagination, Autoplay]);
+// Swiper.use([Navigation, Pagination, Autoplay]);
 
 export default {
   name: "ListContainer",
@@ -124,32 +100,37 @@ export default {
   },
   watch: {
     banners: () => {
-      console.log(111);
+     // console.log(111);
     },
   },
+ 
   //有bug，computed必须要写methods上面
-  async mounted() {
+   async mounted() {
     await this.reqgetbanners();
-    console.log(this.banners);
-    this.$nextTick(() => {
-      setTimeout(() => {
-        new Swiper(".swiper-container", {
-          loop: true,//一直轮播
-          pagination: {
-            el: ".swiper-pagination",
-            clickable:true,//点击小圆点选择页面，默认不可点击。设置小圆点可以点击，
-          },
-          navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          },
-          autoplay:{
-            delay:3000,
-            disableOnInteraction:false,// 当用户点击下一页，仍不会中断自动轮播
-          }
-        });
-      }, 0);
-    });
+    //console.log(this.banners);
+    //常富在我定时器外面又加了nextTick，两者功能一样，多余
+    // // this.$nextTick(() => {
+    //   setTimeout(() => {
+    //     new Swiper(".swiper-container", {
+    //       loop: true,//一直轮播
+    //       pagination: {
+    //         el: ".swiper-pagination",
+    //         clickable:true,//点击小圆点选择页面，默认不可点击。设置小圆点可以点击，
+    //       },
+    //       navigation: {
+    //         nextEl: ".swiper-button-next",
+    //         prevEl: ".swiper-button-prev",
+    //       },
+    //       autoplay:{
+    //         delay:3000,
+    //         disableOnInteraction:false,// 当用户点击下一页，仍不会中断自动轮播
+    //       }
+    //     });
+    //   }, 0);
+    // // });
+  },
+   components:{
+     Carousel
   },
 };
 </script>
