@@ -1,4 +1,4 @@
-import { typenav, reqGetBanners, reqGetFloors } from "../../api/typenav";
+import { typenav, reqGetBanners, reqGetFloors } from "../../api/home";
 
 export default {
   state: {
