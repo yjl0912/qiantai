@@ -1,5 +1,5 @@
 <template>
-  
+    <!-- 这就是轮播图触发的条件之一：dom结构，在轮播图组件的template里面 -->
     <div class="swiper-container" ref="swiper">
       <div class="swiper-wrapper">
         <!-- <div class="swiper-slide">
