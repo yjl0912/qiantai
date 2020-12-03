@@ -12,8 +12,6 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-
-
             <!-- 展示keyword面包屑 -->
             <li
               class="with-x"
@@ -23,8 +21,7 @@
               {{ options.keyword }}<i>×</i>
             </li>
 
-
-             <!-- 展示category面包屑 -->
+            <!-- 展示category面包屑 -->
             <li
               class="with-x"
               v-show="options.categoryName"
@@ -32,7 +29,6 @@
             >
               {{ options.categoryName }}<i>×</i>
             </li>
-
 
             <!-- 展示品牌名面包屑 -->
             <li
@@ -43,26 +39,24 @@
               {{ options.trademark.split(":")[1] }}<i>×</i>
             </li>
 
-
             <!-- 展示品牌的属性的数据面包屑 -->
-            <li class="with-x"
-            v-for="(prop, index) in options.props"
-            :key="prop"
-            @click="hideAttrs(index)"
+            <li
+              class="with-x"
+              v-for="(prop, index) in options.props"
+              :key="prop"
+              @click="hideAttrs(index)"
             >
-            {{prop.split(':')[2]}}:{{prop.split(':')[1]}}<i>×</i>
+              {{ prop.split(":")[2] }}:{{ prop.split(":")[1] }}<i>×</i>
             </li>
-
           </ul>
         </div>
 
         <!--选择商品的类别-->
-        <SearchSelector :addTrademark="addTrademark"  @add-attrs="addAttrs"/>
+        <SearchSelector :addTrademark="addTrademark" @add-attrs="addAttrs" />
         <!-- 把方法传过去 -->
 
-
         <!--商品导航列表-->
-        
+
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
@@ -75,12 +69,11 @@
                     >综合<i
                       :class="{
                         iconfont: true,
-                        'icon-arrowBottom-fill':isAllDown, // 降序图标
+                        'icon-arrowBottom-fill': isAllDown, // 降序图标
                         'icon-arrowTop': !isAllDown, // 升序图标
                       }"
                     ></i
                   ></a>
-       
                 </li>
                 <li>
                   <a>销量</a>
@@ -162,36 +155,25 @@
               </li>
             </ul>
           </div>
-          <!-- 分页器 -->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          
+         <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="options.pageNo"
+            :pager-count="7"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="5"
+            background
+            layout="
+              prev,
+              pager, 
+              next, 
+              total, 
+              sizes, 
+              jumper"
+            :total="total"
+          >
+          </el-pagination> 
         </div>
       </div>
     </div>
@@ -219,8 +201,8 @@ export default {
         props: [],
         trademark: "",
       },
-      isAllDown:true,
-      isPriceDown:false
+      isAllDown: true,
+      isPriceDown: false,
       // vscode小技巧：
       //对多行添加相同的内容: 选中Alt+鼠标左键即可，按ESC退出
       // Ctrl  +  [    //向左缩进
@@ -288,45 +270,54 @@ export default {
       this.updateProductList();
     },
     //接收品牌的属性，并请求品牌属性的数据展示
-    addAttrs(prop){
-        this.options.props.push(prop)
-        this.updateProductList()
+    addAttrs(prop) {
+      this.options.props.push(prop);
+      this.updateProductList();
     },
     //删掉attr的面包屑，并重新请求
-    hideAttrs(index){
-      this.options.props.splice(index,1),
-      this.updateProductList()
+    hideAttrs(index) {
+      this.options.props.splice(index, 1), this.updateProductList();
     },
     //设置排序的方式 1：desc
-    setOrder(order){
-     
-      
-      let [orderNum,orderType] = this.options.order.split(':');
-      
+    setOrder(order) {
+      let [orderNum, orderType] = this.options.order.split(":");
+
       //相等点击的就是第二次，改变图标
-      if(orderNum == order){
-        if(order == 1){
-          this.isAllDown = !this.isAllDown
-        }else{
-          this.isPriceDown = !this.isPriceDown
+      if (orderNum == order) {
+        if (order == 1) {
+          this.isAllDown = !this.isAllDown;
+        } else {
+          this.isPriceDown = !this.isPriceDown;
         }
-        
-        orderType = orderType === 'desc'?'asc':'desc'
-      }else{
-        this.isPriceDown = false;
+        orderType = orderType === "desc" ? "asc" : "desc";
+      } else {
+        // 点1的时候不需要将2初始化为升序，所以判断为时再初始化升序
+        if (order == 1) {
+          orderType = this.isAllDown ? "desc" : "asc";
+        } else {
+          this.isPriceDown = false;
+          orderType = "asc";
+        }
       }
-     
-        
-     
-      this.options.order  = `${order}:${orderType}`;
 
-    }
-
-
-
-     },
+      this.options.order = `${order}:${orderType}`;
+      this.updateProductList();
+    },
+    // 当每页条数发生变化触发
+    handleSizeChange(pageSize) {
+      // console.log("pageSize", pageSize);
+      this.options.pageSize = pageSize;
+      this.updateProductList();
+    },
+    // 当页码发生变化触发
+    handleCurrentChange(pageNo) {
+      // console.log("pageNo", pageNo);
+      // this.options.pageNo = pageNo;
+      this.updateProductList(pageNo);
+    },
+  },
   computed: {
-    ...mapGetters(["goodsList"]),
+    ...mapGetters(["goodsList","total"]),
   },
 
   mounted() {
