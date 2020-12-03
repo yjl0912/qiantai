@@ -67,6 +67,11 @@ export default {
      this.$router.push(location)
     },
   },
+  mounted(){
+    this.$bus.$on('delkeyword',()=>{
+      this.searchText = ''
+    })
+  }
 };
 </script>
 
