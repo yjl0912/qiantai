@@ -154,17 +154,15 @@ export default {
       //Ctrl  +  ]    //向右缩进
     };
   },
+  watch:{
+    $route(){
+      this.updateProductList();
+    }
+  },
   methods: {
     ...mapActions(["getProductList"]),
-  },
-  computed: {
-    ...mapGetters(["goodsList"]),
-  },
-  // methods:{
-
-  // },
-  
-  mounted() {
+    // 根据地址来初始化搜索条件
+    updateProductList(){
     const { searchText:keyword } = this.$route.params;
     const {
       categoryName,
@@ -184,6 +182,17 @@ export default {
     };
     this.options = options;
     this.getProductList( options );
+    }
+  },
+  computed: {
+    ...mapGetters(["goodsList"]),
+  },
+  // methods:{
+
+  // },
+  
+  mounted() {
+   this.updateProductList()
   },
   components: {
     SearchSelector,
