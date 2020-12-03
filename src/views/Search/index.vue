@@ -12,18 +12,32 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-show="options.keyword" @click="delkeywordandsearchText"
-            >{{options.keyword}}<i>×</i></li>
-            <li class="with-x" v-show="options.categoryName"  @click="delcategory"
-            >{{options.categoryName}}<i>×</i></li>
-             <li class="with-x" v-show="options.trademark" 
-            >{{options.trademark.split(':')[1]}}<i>×</i></li>
-           
+            <li
+              class="with-x"
+              v-show="options.keyword"
+              @click="delkeywordandsearchText"
+            >
+              {{ options.keyword }}<i>×</i>
+            </li>
+            <li
+              class="with-x"
+              v-show="options.categoryName"
+              @click="delcategory"
+            >
+              {{ options.categoryName }}<i>×</i>
+            </li>
+            <li
+              class="with-x"
+              v-show="options.trademark"
+              @click="hideTrademark"
+            >
+              {{ options.trademark.split(":")[1] }}<i>×</i>
+            </li>
           </ul>
         </div>
 
         <!--选择商品的类别-->
-        <SearchSelector :addTrademark='addTrademark' />
+        <SearchSelector :addTrademark="addTrademark" />
         <!-- 把方法传过去 -->
 
         <!--商品导航列表-->
@@ -158,67 +172,72 @@ export default {
       //Ctrl  +  ]    //向右缩进
     };
   },
-  watch:{
-    $route(){
+  watch: {
+    $route() {
       this.updateProductList();
-    }
+    },
   },
   methods: {
     ...mapActions(["getProductList"]),
     // 根据地址来初始化搜索条件
-    updateProductList(){
-    const { searchText:keyword } = this.$route.params;
-    const {
-      categoryName,
-      category1Id,
-      category2Id,
-      category3Id,
-    } = this.$route.query;
-    // console.log(this.$route.params,this.$route.query)
-    // const 后面的options虽然是在配置对象里，但不能用this.  因为const不能定义已经存在的变量（数据）
-    const options = {
-      ...this.options,
-      keyword,
-      categoryName,
-      category1Id,
-      category2Id,
-      category3Id,
-    };
-    this.options = options;
-    this.getProductList( options );
+    updateProductList() {
+      const { searchText: keyword } = this.$route.params;
+      const {
+        categoryName,
+        category1Id,
+        category2Id,
+        category3Id,
+      } = this.$route.query;
+      // console.log(this.$route.params,this.$route.query)
+      // const 后面的options虽然是在配置对象里，但不能用this.  因为const不能定义已经存在的变量（数据）
+      const options = {
+        ...this.options,
+        keyword,
+        categoryName,
+        category1Id,
+        category2Id,
+        category3Id,
+      };
+      this.options = options;
+      this.getProductList(options);
     },
     //删除本search组件的keyword 和Header组件得到searchText
-    delkeywordandsearchText(){
-      this.options.keyword = '';//清除keyword，删除面包屑
+    delkeywordandsearchText() {
+      this.options.keyword = ""; //清除keyword，删除面包屑
       this.$router.replace({
-        name:"search",
-        query:this.$route.query
-      }) // 重新跳路径，因为路径被监视，变化就发请求更新数据
-      this.$bus.$emit('delkeyword') //全局事件总线，Search组件触发Header组件绑定的事件，将Header里面的searchText值设为空
-
+        name: "search",
+        query: this.$route.query,
+      }); // 重新跳路径，因为路径被监视，变化就发请求更新数据
+      this.$bus.$emit("delkeyword"); //全局事件总线，Search组件触发Header组件绑定的事件，将Header里面的searchText值设为空
     },
     //删除category（categoryName，category1Id，category2Id，category3Id）
-    delcategory(){
-      this.options.categoryName = '';
+    delcategory() {
+      this.options.categoryName = "";
       this.options.category1Id = "";
       this.options.category2Id = "";
       this.options.category3Id = ""; //清楚category，删除面包屑
       this.$router.replace({
-        name:"search",
-        params:this.$route.params
-      })  //重新跳路径，路径变了被监视到，会重新发请求更新数据
+        name: "search",
+        params: this.$route.params,
+      }); //重新跳路径，路径变了被监视到，会重新发请求更新数据
     },
-    addTrademark(trademark){
-      this.options.trademark = trademark
-      this.updateProductList()
-    }
+    //接收传过来的品牌名，添加品牌，并请求品牌的数据
+    addTrademark(trademark) {
+      this.options.trademark = trademark;
+      this.updateProductList();
+    },
+    //删除隐藏品牌名，并重新请求数据，应该显示全部的内容
+    hideTrademark() {
+      this.options.trademark = "";
+      this.updateProductList();
+    },
   },
   computed: {
     ...mapGetters(["goodsList"]),
   },
- 
+
   mounted() {
-   this.updateProductList()
+    this.updateProductList();
   },
   components: {
     SearchSelector,
