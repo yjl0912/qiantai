@@ -4,6 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
+          <!-- 品牌遍历展示 -->
           <li
             v-for="trademark in trademarkList"
             :key="trademark.tmId"
@@ -22,7 +23,13 @@
       <div class="fl key">{{ attrs.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attr, index) in attrs.attrValueList" :key="index">
+          <li
+            v-for="(attr, index) in attrs.attrValueList"
+            :key="index"
+            @click="
+              $emit('add-attrs', `${attrs.attrId}:${attr}:${attrs.attrName}`)
+            "
+          >
             <a>{{ attr }}</a>
           </li>
         </ul>

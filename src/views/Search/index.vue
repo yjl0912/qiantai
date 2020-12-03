@@ -12,6 +12,9 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
+
+
+            <!-- 展示keyword面包屑 -->
             <li
               class="with-x"
               v-show="options.keyword"
@@ -19,6 +22,9 @@
             >
               {{ options.keyword }}<i>×</i>
             </li>
+
+
+             <!-- 展示category面包屑 -->
             <li
               class="with-x"
               v-show="options.categoryName"
@@ -26,6 +32,9 @@
             >
               {{ options.categoryName }}<i>×</i>
             </li>
+
+
+            <!-- 展示品牌名面包屑 -->
             <li
               class="with-x"
               v-show="options.trademark"
@@ -33,11 +42,22 @@
             >
               {{ options.trademark.split(":")[1] }}<i>×</i>
             </li>
+
+
+            <!-- 展示品牌的属性的数据面包屑 -->
+            <li class="with-x"
+            v-for="(prop, index) in options.props"
+            :key="prop"
+            @click="hideAttrs(index)"
+            >
+            {{prop.split(':')[2]}}:{{prop.split(':')[1]}}<i>×</i>
+            </li>
+
           </ul>
         </div>
 
         <!--选择商品的类别-->
-        <SearchSelector :addTrademark="addTrademark" />
+        <SearchSelector :addTrademark="addTrademark"  @add-attrs="addAttrs"/>
         <!-- 把方法传过去 -->
 
         <!--商品导航列表-->
@@ -221,7 +241,7 @@ export default {
         params: this.$route.params,
       }); //重新跳路径，路径变了被监视到，会重新发请求更新数据
     },
-    //接收传过来的品牌名，添加品牌，并请求品牌的数据
+    //接收传过来的品牌名，添加品牌，并请求品牌的数据。使用的是props传这个方法
     addTrademark(trademark) {
       this.options.trademark = trademark;
       this.updateProductList();
@@ -231,7 +251,17 @@ export default {
       this.options.trademark = "";
       this.updateProductList();
     },
-  },
+    //接收品牌的属性，并请求品牌属性的数据展示
+    addAttrs(prop){
+        this.options.props.push(prop)
+        this.updateProductList()
+    },
+    //删掉attr的面包屑，并重新请求
+    hideAttrs(index){
+      this.options.props.splice(index,1),
+      this.updateProductList()
+    }
+     },
   computed: {
     ...mapGetters(["goodsList"]),
   },
