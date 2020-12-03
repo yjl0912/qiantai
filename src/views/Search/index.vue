@@ -60,28 +60,62 @@
         <SearchSelector :addTrademark="addTrademark"  @add-attrs="addAttrs"/>
         <!-- 把方法传过去 -->
 
+
         <!--商品导航列表-->
+        
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li
+                  :class="{ active: options.order.indexOf('1') > -1 }"
+                  @click="setOrder('1')"
+                >
+                  <a
+                    >综合<i
+                      :class="{
+                        iconfont: true,
+                        'icon-arrowBottom-fill':isAllDown, // 降序图标
+                        'icon-arrowTop': !isAllDown, // 升序图标
+                      }"
+                    ></i
+                  ></a>
+       
                 </li>
                 <li>
-                  <a href="#">销量</a>
+                  <a>销量</a>
                 </li>
                 <li>
-                  <a href="#">新品</a>
+                  <a>新品</a>
                 </li>
                 <li>
-                  <a href="#">评价</a>
+                  <a>评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li
+                  :class="{ active: options.order.indexOf('2') > -1 }"
+                  @click="setOrder('2')"
+                >
+                  <a>
+                    价格
+                    <span>
+                      <i
+                        :class="{
+                          iconfont: true,
+                          'icon-shangsanjiaoxing': true,
+                          deactive:
+                            options.order.indexOf('2') > -1 && isPriceDown,
+                        }"
+                      ></i>
+                      <i
+                        :class="{
+                          iconfont: true,
+                          'icon-xiasanjiaoxing': true,
+                          deactive:
+                            options.order.indexOf('2') > -1 && !isPriceDown,
+                        }"
+                      ></i>
+                    </span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -179,12 +213,14 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        order: "1:desc",
         pageNo: 1,
         pageSize: 5,
         props: [],
         trademark: "",
       },
+      isAllDown:true,
+      isPriceDown:false
       // vscode小技巧：
       //对多行添加相同的内容: 选中Alt+鼠标左键即可，按ESC退出
       // Ctrl  +  [    //向左缩进
@@ -260,7 +296,34 @@ export default {
     hideAttrs(index){
       this.options.props.splice(index,1),
       this.updateProductList()
+    },
+    //设置排序的方式 1：desc
+    setOrder(order){
+     
+      
+      let [orderNum,orderType] = this.options.order.split(':');
+      
+      //相等点击的就是第二次，改变图标
+      if(orderNum == order){
+        if(order == 1){
+          this.isAllDown = !this.isAllDown
+        }else{
+          this.isPriceDown = !this.isPriceDown
+        }
+        
+        orderType = orderType === 'desc'?'asc':'desc'
+      }else{
+        this.isPriceDown = false;
+      }
+     
+        
+     
+      this.options.order  = `${order}:${orderType}`;
+
     }
+
+
+
      },
   computed: {
     ...mapGetters(["goodsList"]),
@@ -378,11 +441,28 @@ export default {
               line-height: 18px;
 
               a {
-                display: block;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
                 cursor: pointer;
                 padding: 11px 15px;
                 color: #777;
                 text-decoration: none;
+
+                i {
+                  padding-left: 5px;
+                }
+                span {
+                  display: flex;
+                  flex-direction: column;
+                  line-height: 8px;
+                  i {
+                    font-size: 12px;
+                    &.deactive {
+                      color: rgba(255, 255, 255, 0.5);
+                    }
+                  }
+                }
               }
 
               &.active {

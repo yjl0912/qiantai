@@ -4,10 +4,10 @@
       <div class="header-left">
         <p>尚品汇欢迎您</p>
         <!-- 图标字体 -->
-    <span class="iconfont icon-xiasanjiaoxing"></span>
+    <!-- <span class="iconfont icon-xiasanjiaoxing"></span>
     <span class="iconfont icon-shangsanjiaoxing"></span>
     <span class="iconfont icon-arrowBottom-fill"></span>
-    <span class="iconfont icon-arrowTop"></span>
+    <span class="iconfont icon-arrowTop"></span> -->
         <p>
           <span>请</span>
           <router-link to="/login" class="graycolor">登录</router-link>
