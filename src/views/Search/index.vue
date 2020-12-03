@@ -16,12 +16,15 @@
             >{{options.keyword}}<i>×</i></li>
             <li class="with-x" v-show="options.categoryName"  @click="delcategory"
             >{{options.categoryName}}<i>×</i></li>
+             <li class="with-x" v-show="options.trademark" 
+            >{{options.trademark.split(':')[1]}}<i>×</i></li>
            
           </ul>
         </div>
 
         <!--选择商品的类别-->
-        <SearchSelector />
+        <SearchSelector :addTrademark='addTrademark' />
+        <!-- 把方法传过去 -->
 
         <!--商品导航列表-->
         <div class="details clearfix">
@@ -184,6 +187,7 @@ export default {
     this.options = options;
     this.getProductList( options );
     },
+    //删除本search组件的keyword 和Header组件得到searchText
     delkeywordandsearchText(){
       this.options.keyword = '';//清除keyword，删除面包屑
       this.$router.replace({
@@ -193,6 +197,7 @@ export default {
       this.$bus.$emit('delkeyword') //全局事件总线，Search组件触发Header组件绑定的事件，将Header里面的searchText值设为空
 
     },
+    //删除category（categoryName，category1Id，category2Id，category3Id）
     delcategory(){
       this.options.categoryName = '';
       this.options.category1Id = "";
@@ -202,15 +207,16 @@ export default {
         name:"search",
         params:this.$route.params
       })  //重新跳路径，路径变了被监视到，会重新发请求更新数据
+    },
+    addTrademark(trademark){
+      this.options.trademark = trademark
+      this.updateProductList()
     }
   },
   computed: {
     ...mapGetters(["goodsList"]),
   },
-  // methods:{
-
-  // },
-  
+ 
   mounted() {
    this.updateProductList()
   },

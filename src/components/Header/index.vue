@@ -130,7 +130,7 @@ export default {
 }
 .search > input {
   width: 490px;
-  height: 32px;
+  height: 27px;
   border: 3px solid rgb(234, 74, 54);
   margin: 36px 0 0 0;
 }
@@ -139,12 +139,12 @@ export default {
 }
 .search > button {
   width: 68px;
-  height: 40px;
+  height: 33px;
   background-color: rgb(234, 74, 54);
   font-size: 12px;
   color: white;
   position: relative;
-  top: 1px;
+  top: 0px;
   left: -2px;
   outline: none;
   border-color: transparent;
