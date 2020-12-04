@@ -111,9 +111,9 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
-                      ><img :src="goods.defaultImg"
-                    /></a>
+                    <router-link :to="`/detail/${goods.id}`">
+                      <img :src="goods.defaultImg"
+                    /></router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -122,12 +122,9 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a
-                      target="_blank"
-                      href="item.html"
-                      title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{ goods.title }}</a
-                    >
+                    <router-link :to="`/detail/${goods.id}`">
+                      {{ goods.title }}
+                    </router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -147,9 +144,8 @@
               </li>
             </ul>
           </div>
-       
 
-         <!-- 这个用element ui的分页器 -->
+          <!-- 这个用element ui的分页器 -->
           <!-- <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -168,18 +164,14 @@
             :total="total"
           >
           </el-pagination> -->
-         <!-- 这是我手写的分页器组件 -->
+          <!-- 这是我手写的分页器组件 -->
           <Pagination
-           @current-page="handleCurrentChange"
-           :current-page='options.pageNo'
-           :pager-count = '7'
-           :page-size= '5'
-           :total='total'
-          
+            @current-page="handleCurrentChange"
+            :current-page="options.pageNo"
+            :pager-count="7"
+            :page-size="5"
+            :total="total"
           />
-
-
-
         </div>
       </div>
     </div>
@@ -190,7 +182,7 @@
 import { mapGetters, mapActions } from "vuex";
 import SearchSelector from "./SearchSelector/SearchSelector";
 import TypeNav from "@comps/TypeNav";
-import Pagination from '@comps/Pagination'
+import Pagination from "@comps/Pagination";
 
 export default {
   name: "Search",
@@ -243,7 +235,6 @@ export default {
         category2Id,
         category3Id,
         pageNo,
-
       };
       this.options = options;
       this.getProductList(options);

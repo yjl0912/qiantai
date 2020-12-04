@@ -134,7 +134,7 @@ export default {
       } else {
         start = myCurrentPage - halfCount;
       }
-
+        
       if (start <= 1) {
         start = 2;
       }
