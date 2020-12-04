@@ -61,10 +61,7 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li
-                  :class="{ active: options.order.indexOf('1') > -1 }"
-                  @click="setOrder('1')"
-                >
+                <li :class="{ active: orderpack('1') }" @click="setOrder('1')">
                   <a
                     >综合<i
                       :class="{
@@ -84,10 +81,7 @@
                 <li>
                   <a>评价</a>
                 </li>
-                <li
-                  :class="{ active: options.order.indexOf('2') > -1 }"
-                  @click="setOrder('2')"
-                >
+                <li :class="{ active: orderpack('2') }" @click="setOrder('2')">
                   <a>
                     价格
                     <span>
@@ -95,16 +89,14 @@
                         :class="{
                           iconfont: true,
                           'icon-shangsanjiaoxing': true,
-                          deactive:
-                            options.order.indexOf('2') > -1 && isPriceDown,
+                          deactive: orderpack('2') && isPriceDown,
                         }"
                       ></i>
                       <i
                         :class="{
                           iconfont: true,
                           'icon-xiasanjiaoxing': true,
-                          deactive:
-                            options.order.indexOf('2') > -1 && !isPriceDown,
+                          deactive: orderpack('2') && !isPriceDown,
                         }"
                       ></i>
                     </span>
@@ -155,8 +147,8 @@
               </li>
             </ul>
           </div>
-          
-         <el-pagination
+
+          <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="options.pageNo"
@@ -173,7 +165,7 @@
               jumper"
             :total="total"
           >
-          </el-pagination> 
+          </el-pagination>
         </div>
       </div>
     </div>
@@ -271,7 +263,7 @@ export default {
     },
     //接收品牌的属性，并请求品牌属性的数据展示
     addAttrs(prop) {
-      if(this.options.props.indexOf(prop)>-1)return
+      if (this.options.props.indexOf(prop) > -1) return;
       this.options.props.push(prop);
       this.updateProductList();
     },
@@ -316,9 +308,13 @@ export default {
       // this.options.pageNo = pageNo;
       this.updateProductList(pageNo);
     },
+    //封装判断order的以什么开头的命令,是用来复用的，因为用的多
+    orderpack(order) {
+      return this.options.order.indexOf(order) > -1;
+    },
   },
   computed: {
-    ...mapGetters(["goodsList","total"]),
+    ...mapGetters(["goodsList", "total"]),
   },
 
   mounted() {
