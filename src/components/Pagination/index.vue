@@ -1,18 +1,37 @@
 <template>
   <div class="pagination">
-    <button>上一页</button>
-    <button>1</button>
+    <button
+      :disabled="myCurrentPage <= 1"
+      @click="setCurrentPage(myCurrentPage - 1)"
+    >
+      上一页
+    </button>
+    <button :class="{ active: myCurrentPage === 1 }" @click="setCurrentPage(1)">
+      1
+    </button>
     <button v-show="startEnd.start > 2">...</button>
     <button
       v-for="item in mapBtnsCount"
       :key="item"
       @click="setCurrentPage(startEnd.start + item - 1)"
+      :class="{ active: myCurrentPage === startEnd.start + item - 1 }"
     >
       {{ startEnd.start + item - 1 }}
     </button>
     <button v-show="startEnd.end < totalPages - 1">...</button>
-    <button v-show="totalPages > 1">{{ totalPages }}</button>
-    <button>下一页</button>
+    <button
+      :class="{ active: myCurrentPage === totalPages }"
+      v-show="totalPages > 1"
+      @click="setCurrentPage(totalPages)"
+    >
+      {{ totalPages }}
+    </button>
+    <button
+      :disabled="myCurrentPage >= totalPages"
+      @click="setCurrentPage(myCurrentPage + 1)"
+    >
+      下一页
+    </button>
     <button>总数：{{ total }}</button>
   </div>
 </template>
@@ -56,6 +75,14 @@ export default {
       // 原因：props数据只读不能修改
       myCurrentPage: this.currentPage,
     };
+  },
+  watch:{
+    myCurrentPage(currentPage){
+      this.$emit('current-change',currentPage);
+    },
+    currentPage(currentPage){
+      this.myCurrentPage = currentPage;
+    }
   },
   computed: {
     // 总页数
@@ -112,9 +139,11 @@ export default {
         start = 2;
       }
 
+       // 正常情况
       end = start + count - 1;
 
       if (end >= totalPages) {
+        // 1 [2] 3
         end = totalPages - 1;
       }
 

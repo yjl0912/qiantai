@@ -170,7 +170,7 @@
           </el-pagination> -->
          <!-- 这是我手写的分页器组件 -->
           <Pagination
-           
+           @current-page="handleCurrentChange"
            :current-page='options.pageNo'
            :pager-count = '7'
            :page-size= '5'
@@ -225,7 +225,7 @@ export default {
   methods: {
     ...mapActions(["getProductList"]),
     // 根据地址来初始化搜索条件
-    updateProductList() {
+    updateProductList(pageNo) {
       const { searchText: keyword } = this.$route.params;
       const {
         categoryName,
@@ -242,6 +242,8 @@ export default {
         category1Id,
         category2Id,
         category3Id,
+        pageNo,
+
       };
       this.options = options;
       this.getProductList(options);
