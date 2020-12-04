@@ -271,6 +271,7 @@ export default {
     },
     //接收品牌的属性，并请求品牌属性的数据展示
     addAttrs(prop) {
+      if(this.options.props.indexOf(prop)>-1)return
       this.options.props.push(prop);
       this.updateProductList();
     },
