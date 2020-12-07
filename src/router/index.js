@@ -8,6 +8,10 @@ import Search from '../views/Search'
 import Detail from '@views/Detail'
 import AddCartSuccess from "../views/AddCartSuccess";
 import ShopCart from "../views/ShopCart";
+import Trade from "../views/Trade";
+import Pay from "../views/Pay";
+import PaySuccess from "../views/PaySuccess";
+import Center from "../views/Center";
 
 Vue.use(VueRouter)
 const router = new VueRouter ({
@@ -52,6 +56,26 @@ const router = new VueRouter ({
 			name: "shopcart",
 			path: "/shopcart",
 			component: ShopCart,
+        },
+
+
+
+
+        {
+			path: "/trade",
+			component: Trade,
+        },
+        {
+			path: "/pay",
+			component: Pay,
+        },
+        {
+			path: "/paysuccess",
+			component: PaySuccess,
+        },
+        {
+			path: "/center/myorder",
+			component: Center,
 		},
     ],
     // 每次切换路由页面滚动条位置

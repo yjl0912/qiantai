@@ -3,12 +3,12 @@
     <div class="header-up">
       <div class="header-left">
         <p>尚品汇欢迎您</p>
-        <!-- 图标字体 -->
-    <!-- <span class="iconfont icon-xiasanjiaoxing"></span>
-    <span class="iconfont icon-shangsanjiaoxing"></span>
-    <span class="iconfont icon-arrowBottom-fill"></span>
-    <span class="iconfont icon-arrowTop"></span> -->
-        <p>
+        <p v-if="$store.state.user.name">
+            <span>{{ $store.state.user.name }}</span>
+            &nbsp;
+            <button>退出</button>
+          </p>
+        <p v-else>
           <span>请</span>
           <router-link to="/login" class="graycolor">登录</router-link>
           <router-link to="/register" class="graycolor">免费注册</router-link>

@@ -100,6 +100,7 @@ export default {
   computed: {
     ...mapState({
       token: (state) => state.user.token,
+      name: (state) => state.user.name,
     }),
   },
   created() {
@@ -126,6 +127,7 @@ export default {
         await this.$store.dispatch("login", { phone, password });
         // 登录成功
         if (this.isAutoLogin) {
+          localStorage.setItem("name", this.name);
           localStorage.setItem("token", this.token);
         }
         this.$router.replace("/");
