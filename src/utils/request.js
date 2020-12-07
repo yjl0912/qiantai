@@ -1,9 +1,12 @@
 import axios from 'axios'
 import { Message } from 'element-ui';
+import getUserTempId from "@utils/getUserTempId";
 
 import NProgress  from 'nprogress'
 import 'nprogress/nprogress.css' //引入样式，在他的包里面
 
+
+const userTempId = getUserTempId();
 const instance = axios.create({
     baseURL:"/api",
     // headers:{
@@ -19,6 +22,7 @@ instance.interceptors.request.use(
         //     }
         // }
         NProgress.start();
+        config.headers.userTempId = userTempId;
         return config;
     }
 

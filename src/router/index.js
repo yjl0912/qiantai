@@ -6,6 +6,8 @@ import Login from '../views/Login'
 import Register from '../views/Register'
 import Search from '../views/Search'
 import Detail from '@views/Detail'
+import AddCartSuccess from "../views/AddCartSuccess";
+import ShopCart from "../views/ShopCart";
 
 Vue.use(VueRouter)
 const router = new VueRouter ({
@@ -38,6 +40,18 @@ const router = new VueRouter ({
 			name: "detail",
 			path: "/detail/:id",
 			component: Detail,
+        },
+        {
+			// 命名路由
+			name: "addcartsuccess",
+			path: "/addcartsuccess",
+			component: AddCartSuccess,
+		},
+		{
+			// 命名路由
+			name: "shopcart",
+			path: "/shopcart",
+			component: ShopCart,
 		},
     ],
     // 每次切换路由页面滚动条位置
