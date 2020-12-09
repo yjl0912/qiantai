@@ -1,35 +1,45 @@
-import { typenav, reqGetBanners, reqGetFloors } from "../../api/home";
+// home组件的vuex状态
+import { reqGetBaseCategoryList, reqGetBanners, reqGetFloors } from "@api/home";
 
 export default {
   state: {
-    category: [],
-    banners: [],
-    floors:[]
+    categoryList: [], // 首页三级分类列表数据
+    banners: [], // 首页轮播图数据
+    floors: [], // 首页楼层数据
   },
   getters: {},
   actions: {
-    async getcategory({ commit }) {
-      const category = await typenav();
-      commit("GET_CATEGORY", category);
+    // 获取首页三级分类列表数据
+    async getCategoryList({ commit }) {
+      // 发送请求
+      const categoryList = await reqGetBaseCategoryList();
+      // 触发mutation函数
+      commit("GET_CATEGORY_LIST", categoryList);
     },
-    async reqgetbanners({ commit }) {
+
+    // async函数会返回一个promise对象
+    // 这个promise对象：当内部代码全部执行完毕时，会变成成功
+    async getBanners({ commit }) {
+      // console.log("actions");
       const banners = await reqGetBanners();
-      console.log(banners);
-      commit("REQGETBANNERS", banners);
+      // 调用commit 同步调用mutation函数
+      commit("GET_BANNERS", banners);
     },
-    async reqgetfloors({ commit }) {
+
+    async getFloors({ commit }) {
       const floors = await reqGetFloors();
-      commit("REQGETFLOORS", floors);
+      commit("GET_FLOORS", floors);
     },
   },
   mutations: {
-    GET_CATEGORY(state, category) {
-      state.category = category;
+    GET_CATEGORY_LIST(state, categoryList) {
+      state.categoryList = categoryList;
     },
-    REQGETBANNERS(state, banners) {
+    GET_BANNERS(state, banners) {
+      // console.log("mutation");
       state.banners = banners;
     },
-    REQGETFLOORS(state, floors) {
+    GET_FLOORS(state, floors) {
       state.floors = floors;
     },
   },

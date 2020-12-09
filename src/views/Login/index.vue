@@ -127,8 +127,8 @@ export default {
         await this.$store.dispatch("login", { phone, password });
         // 登录成功
         if (this.isAutoLogin) {
-          localStorage.setItem("name", this.name);
           localStorage.setItem("token", this.token);
+          localStorage.setItem("name", this.name);
         }
         this.$router.replace("/");
       } catch {

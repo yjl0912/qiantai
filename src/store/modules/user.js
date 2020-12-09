@@ -2,7 +2,7 @@ import { reqRegister, reqLogin } from "@api/user";
 
 export default {
 	state: {
-		name:localStorage.getItem("name") || "",
+		name: localStorage.getItem("name") || "",
 		token: localStorage.getItem("token") || "",
 	},
 	getters: {},

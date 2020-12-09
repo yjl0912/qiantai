@@ -1,16 +1,15 @@
-//汇总
+// 汇总所有vuex的模块
 import home from "./home";
-import user from './user'
-import search from './search'
-import detail from './detail'
+import search from "./search";
+import detail from "./detail";
 import shopcart from "./shopcart";
+import user from "./user";
 
-//统一暴露
+// 统一暴露出去
 export default {
-  home,
- 
-  search,
-  detail,
-  shopcart,
-  user
+	home,
+	search,
+	detail,
+	shopcart,
+	user,
 };
