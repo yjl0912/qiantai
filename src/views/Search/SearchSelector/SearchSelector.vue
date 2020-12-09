@@ -1,10 +1,10 @@
 <template>
   <div class="clearfix selector">
-    <!-- 品牌 -->
     <div class="type-wrap logo">
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
+          <!-- 品牌遍历展示 -->
           <li
             v-for="trademark in trademarkList"
             :key="trademark.tmId"
@@ -19,25 +19,15 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <!-- 品牌属性 -->
     <div class="type-wrap" v-for="attrs in attrsList" :key="attrs.attrId">
       <div class="fl key">{{ attrs.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <!-- <li
-            v-for="(attr, index) in attrs.attrValueList"
-            :key="index"
-            @click="
-              $emit('add-prop', `${attrs.attrId}:${attr}:${attrs.attrName}`)
-            "
-          > -->
           <li
             v-for="(attr, index) in attrs.attrValueList"
             :key="index"
             @click="
-              $listeners['add-prop'](
-                `${attrs.attrId}:${attr}:${attrs.attrName}`
-              )
+              $emit('add-attrs', `${attrs.attrId}:${attr}:${attrs.attrName}`)
             "
           >
             <a>{{ attr }}</a>
@@ -58,11 +48,11 @@ export default {
     addTrademark: Function,
   },
   computed: {
-    ...mapGetters(["trademarkList", "attrsList"]),
+    ...mapGetters(["trademarkList", "attrsList"]), //品牌和属性
   },
 };
 </script>
-
+ 
 <style lang="less" scoped>
 .selector {
   border: 1px solid #ddd;

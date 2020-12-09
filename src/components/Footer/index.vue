@@ -1,15 +1,17 @@
 <template>
-  <div>footer...</div>
+  <div>
+    <h1>我是footer</h1>
+ 
+  </div>
 </template>
 
 <script>
+
 export default {
-  name: "Footer",
-};
+  name: 'Footer',
+}
 </script>
 
-<style lang="less">
-// .footer-aaa {
-//   color: green;
-// }
+<style lang="less" scoped>
+
 </style>

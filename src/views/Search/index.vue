@@ -2,10 +2,9 @@
   <div>
     <!-- 三级分类列表 -->
     <TypeNav />
-
     <div class="main">
       <div class="py-container">
-        <!-- 已选商品的类别 -->
+        <!--已选商品的类别-->
         <div class="bread">
           <ul class="fl sui-breadcrumb">
             <li>
@@ -13,46 +12,62 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-show="options.keyword" @click="delKeyword">
-              关键词: {{ options.keyword }}<i>×</i>
+            <!-- 展示keyword面包屑 -->
+            <li
+              class="with-x"
+              v-show="options.keyword"
+              @click="delkeywordandsearchText"
+            >
+              {{ options.keyword }}<i>×</i>
             </li>
+
+            <!-- 展示category面包屑 -->
             <li
               class="with-x"
               v-show="options.categoryName"
-              @click="delCategory"
+              @click="delcategory"
             >
-              分类名称: {{ options.categoryName }}<i>×</i>
-            </li>
-            <li class="with-x" v-show="options.trademark" @click="delTrademark">
-              品牌: {{ options.trademark.split(":")[1] }}<i>×</i>
+              {{ options.categoryName }}<i>×</i>
             </li>
 
+            <!-- 展示品牌名面包屑 -->
+            <li
+              class="with-x"
+              v-show="options.trademark"
+              @click="hideTrademark"
+            >
+              {{ options.trademark.split(":")[1] }}<i>×</i>
+            </li>
+
+            <!-- 展示品牌的属性的数据面包屑 -->
             <li
               class="with-x"
               v-for="(prop, index) in options.props"
               :key="prop"
-              @click="delProp(index)"
+              @click="hideAttrs(index)"
             >
-              {{ prop.split(":")[2] }}: {{ prop.split(":")[1] }}<i>×</i>
+              {{ prop.split(":")[2] }}:{{ prop.split(":")[1] }}<i>×</i>
             </li>
           </ul>
         </div>
 
-        <!-- 选择商品的类别 -->
-        <SearchSelector :addTrademark="addTrademark" @add-prop="addProp" />
+        <!--选择商品的类别-->
+        <SearchSelector :addTrademark="addTrademark" @add-attrs="addAttrs" />
+        <!-- 把方法传过去 -->
 
-        <!-- 商品列表导航 -->
+        <!--商品导航列表-->
+
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{ active: isOrder('1') }" @click="setOrder('1')">
+                <li :class="{ active: orderpack('1') }" @click="setOrder('1')">
                   <a
                     >综合<i
                       :class="{
                         iconfont: true,
-                        'icon-direction-down': isAllDown, // 降序图标
-                        'icon-direction-up': !isAllDown, // 升序图标
+                        'icon-arrowBottom-fill': isAllDown, // 降序图标
+                        'icon-arrowTop': !isAllDown, // 升序图标
                       }"
                     ></i
                   ></a>
@@ -66,22 +81,22 @@
                 <li>
                   <a>评价</a>
                 </li>
-                <li :class="{ active: isOrder('2') }" @click="setOrder('2')">
+                <li :class="{ active: orderpack('2') }" @click="setOrder('2')">
                   <a>
                     价格
                     <span>
                       <i
                         :class="{
                           iconfont: true,
-                          'icon-arrow-up-filling': true,
-                          deactive: isOrder('2') && isPriceDown,
+                          'icon-shangsanjiaoxing': true,
+                          deactive: orderpack('2') && isPriceDown,
                         }"
                       ></i>
                       <i
                         :class="{
                           iconfont: true,
-                          'icon-arrow-down-filling': true,
-                          deactive: isOrder('2') && !isPriceDown,
+                          'icon-xiasanjiaoxing': true,
+                          deactive: orderpack('2') && !isPriceDown,
                         }"
                       ></i>
                     </span>
@@ -96,8 +111,8 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <router-link :to="`/detail/${goods.id}`"
-                      ><img :src="goods.defaultImg"
+                    <router-link :to="`/detail/${goods.id}`">
+                      <img :src="goods.defaultImg"
                     /></router-link>
                   </div>
                   <div class="price">
@@ -107,9 +122,9 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <router-link :to="`/detail/${goods.id}`">{{
-                      goods.title
-                    }}</router-link>
+                    <router-link :to="`/detail/${goods.id}`">
+                      {{ goods.title }}
+                    </router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -129,14 +144,8 @@
               </li>
             </ul>
           </div>
-          <!-- 分页器 -->
-          <Pagination
-            @current-change="handleCurrentChange"
-            :current-page="options.pageNo"
-            :pager-count="7"
-            :page-size="5"
-            :total="total"
-          />
+
+          <!-- 这个用element ui的分页器 -->
           <!-- <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -155,6 +164,14 @@
             :total="total"
           >
           </el-pagination> -->
+          <!-- 这是我手写的分页器组件 -->
+          <Pagination
+            @current-page="handleCurrentChange"
+            :current-page="options.pageNo"
+            :pager-count="7"
+            :page-size="5"
+            :total="total"
+          />
         </div>
       </div>
     </div>
@@ -174,46 +191,33 @@ export default {
       options: {
         category1Id: "", // 一级分类id
         category2Id: "", // 二级分类id
-        category3Id: "", // 三级分类id
-        categoryName: "", // 分类名称
-        keyword: "", // 搜索内容（搜索关键字）
-        order: "1:desc", // 排序方式：1：综合排序  2：价格排序   asc 升序  desc 降序
-        pageNo: 1, // 分页的页码（第几页）
-        pageSize: 5, // 分页的每页商品数量
-        props: [], // 商品属性
-        trademark: "", // 品牌
+        category3Id: "",
+        categoryName: "",
+        keyword: "",
+        order: "1:desc",
+        pageNo: 1,
+        pageSize: 5,
+        props: [],
+        trademark: "",
       },
+      isAllDown: true,
+      isPriceDown: false,
+      // vscode小技巧：
+      //对多行添加相同的内容: 选中Alt+鼠标左键即可，按ESC退出
+      // Ctrl  +  [    //向左缩进
 
-      isAllDown: true, // 综合排序图标
-      isPriceDown: false, // 价格排序
+      //Ctrl  +  ]    //向右缩进
     };
   },
   watch: {
-    // 监视$route的变化：监视地址的变化
     $route() {
       this.updateProductList();
     },
-
-    // $route: {
-    //   handler() {
-    //     this.updateProductList();
-    //   },
-    //   immediate: true // 一上来触发一次
-    // }
-  },
-  computed: {
-    // ...mapState({
-    //   // productList: (state) => state.search.productList,
-    //   trademarkList: (state) => state.search.productList.trademarkList,
-    //   attrsList: (state) => state.search.productList.attrsList,
-    //   goodsList: (state) => state.search.productList.goodsList,
-    // }),
-    ...mapGetters(["goodsList", "total"]),
   },
   methods: {
     ...mapActions(["getProductList"]),
-    // 更新商品列表
-    updateProductList(pageNo = 1) {
+    // 根据地址来初始化搜索条件
+    updateProductList(pageNo) {
       const { searchText: keyword } = this.$route.params;
       const {
         categoryName,
@@ -221,88 +225,75 @@ export default {
         category2Id,
         category3Id,
       } = this.$route.query;
-
+      // console.log(this.$route.params,this.$route.query)
+      // const 后面的options虽然是在配置对象里，但不能用this.  因为const不能定义已经存在的变量（数据）
       const options = {
-        ...this.options, // 携带上所有初始化数据
-        keyword, // 以下会覆盖上面的属性
+        ...this.options,
+        keyword,
         categoryName,
         category1Id,
         category2Id,
         category3Id,
         pageNo,
       };
-
       this.options = options;
-
       this.getProductList(options);
     },
-    // 删除关键字
-    delKeyword() {
-      // 清除options
-      this.options.keyword = "";
-      // 清空header组件的keyword
-      this.$bus.$emit("clearKeyword");
-      // 清除路径params参数
-      // $route上面的属性是只读属性，不能修改
-      // this.$route.params = {};
+    //删除本search组件的keyword 和Header组件得到searchText
+    delkeywordandsearchText() {
+      this.options.keyword = ""; //清除keyword，删除面包屑
       this.$router.replace({
         name: "search",
         query: this.$route.query,
-      });
+      }); // 重新跳路径，因为路径被监视，变化就发请求更新数据
+      this.$bus.$emit("delkeyword"); //全局事件总线，Search组件触发Header组件绑定的事件，将Header里面的searchText值设为空
     },
-    // 删除分类
-    delCategory() {
+    //删除category（categoryName，category1Id，category2Id，category3Id）
+    delcategory() {
       this.options.categoryName = "";
       this.options.category1Id = "";
       this.options.category2Id = "";
-      this.options.category3Id = "";
-
+      this.options.category3Id = ""; //清楚category，删除面包屑
       this.$router.replace({
         name: "search",
         params: this.$route.params,
-      });
+      }); //重新跳路径，路径变了被监视到，会重新发请求更新数据
     },
-    // 添加品牌并更新数据
+    //接收传过来的品牌名，添加品牌，并请求品牌的数据。使用的是props传这个方法
     addTrademark(trademark) {
-      if (this.options.trademark) return;
       this.options.trademark = trademark;
       this.updateProductList();
     },
-    // 删除品牌数据
-    delTrademark() {
+    //删除隐藏品牌名，并重新请求数据，应该显示全部的内容
+    hideTrademark() {
       this.options.trademark = "";
       this.updateProductList();
     },
-    // 添加品牌属性并更新数据
-    addProp(prop) {
-      // 判断属性是否存在
+    //接收品牌的属性，并请求品牌属性的数据展示
+    addAttrs(prop) {
       if (this.options.props.indexOf(prop) > -1) return;
       this.options.props.push(prop);
       this.updateProductList();
     },
-    // 删除品牌属性
-    delProp(index) {
-      this.options.props.splice(index, 1);
-      this.updateProductList();
+    //删掉attr的面包屑，并重新请求
+    hideAttrs(index) {
+      this.options.props.splice(index, 1), this.updateProductList();
     },
-    // 设置排序方式  1:desc
+    //设置排序的方式 1：desc
     setOrder(order) {
       let [orderNum, orderType] = this.options.order.split(":");
 
-      // 不相等点击的就是第一次：不改变图标
-      // 相等点击的就是第二次：改变图标
-      if (orderNum === order) {
-        // 看order是1改综合排序
-        // 看order是1改价格排序
-        if (order === "1") {
+      //相等点击的就是第二次，改变图标
+      if (orderNum == order) {
+        if (order == 1) {
           this.isAllDown = !this.isAllDown;
         } else {
           this.isPriceDown = !this.isPriceDown;
         }
         orderType = orderType === "desc" ? "asc" : "desc";
       } else {
-        // 点击一次, 如果点击的是价格，应该初始化为升序
-        if (order === "1") {
+        // 点1的时候不需要将2初始化为升序，所以判断为时再初始化升序
+        if (order == 1) {
           orderType = this.isAllDown ? "desc" : "asc";
         } else {
           this.isPriceDown = false;
@@ -325,15 +316,16 @@ export default {
       // this.options.pageNo = pageNo;
       this.updateProductList(pageNo);
     },
-    // 判断order以 xxx 开头
-    isOrder(order) {
+    //封装判断order的以什么开头的命令,是用来复用的，因为用的多
+    orderpack(order) {
       return this.options.order.indexOf(order) > -1;
     },
   },
+  computed: {
+    ...mapGetters(["goodsList", "total"]),
+  },
+
   mounted() {
-    // 一上来发送请求会携带参数
-    // 解构赋值提取 params 中 searchText 属性
-    // 将 searchText 重命名为 keyword
     this.updateProductList();
   },
   components: {

@@ -1,9 +1,6 @@
-import Vue from "vue";
-import { Button, Pagination, InputNumber, Message, MessageBox } from "element-ui";
+import Vue from 'vue'
+import { Button ,Pagination,InputNumber} from 'element-ui'
 
 Vue.use(Button);
-Vue.use(Pagination);
+Vue.use(Pagination);//使用分页器
 Vue.use(InputNumber);
-
-Vue.prototype.$message = Message;
-Vue.prototype.$alert = MessageBox.alert;
