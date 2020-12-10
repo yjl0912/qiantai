@@ -1,5 +1,5 @@
 <template>
-   <div class="swiper-container" ref="swiper">
+  <div class="swiper-container" ref="swiper">
     <div class="swiper-wrapper">
       <div
         class="swiper-slide"
@@ -15,20 +15,22 @@
 </template>
 
 <script>
-import Swiper,{Navigation} from 'swiper';
-Swiper.use([Navigation])
+import Swiper, { Navigation } from "swiper";
+
+Swiper.use([Navigation]);
 
 export default {
   name: "ImageList",
-  props:{
-      skuImageList:Array,
-      updateCurrentImgIndex:Function
-
+  props: {
+    skuImageList: Array,
+    updateCurrentImgIndex: Function,
   },
-  watch:{
-    skuImageList(){
-      this.$nextTick(()=>{
-           new Swiper(this.$refs.swiper, {
+  watch: {
+    skuImageList() {
+      // 一旦触发，说明值发生了变化，此时就有数据
+      // 等数据回来，渲染完成DOM元素
+      this.$nextTick(() => {
+        new Swiper(this.$refs.swiper, {
           slidesPerView: 5, // 每页显示轮播图的数量
           spaceBetween: 30, // 轮播图间距
           slidesPerGroup: 5, // 切换时切换轮播图的数量
@@ -37,9 +39,9 @@ export default {
             prevEl: ".swiper-button-prev",
           },
         });
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>
 

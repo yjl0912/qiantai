@@ -16,20 +16,20 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom 
-          :imgUrl="
-            skuInfo.skuImageList[currentImgIndex]&&
-            skuInfo.skuImageList[currentImgIndex].imgUrl
-          "
-           :bigImgUrl="
+          <Zoom
+            :imgUrl="
               skuInfo.skuImageList[currentImgIndex] &&
               skuInfo.skuImageList[currentImgIndex].imgUrl
             "
-            />
+            :bigImgUrl="
+              skuInfo.skuImageList[currentImgIndex] &&
+              skuInfo.skuImageList[currentImgIndex].imgUrl
+            "
+          />
           <!-- 小图列表 -->
-          <ImageList 
-          :updateCurrentImgIndex="updateCurrentImgIndex"
-          :skuImageList="skuInfo.skuImageList" 
+          <ImageList
+            :skuImageList="skuInfo.skuImageList"
+            :updateCurrentImgIndex="updateCurrentImgIndex"
           />
         </div>
         <!-- 右侧选择区域布局 -->
@@ -101,7 +101,7 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                 <el-input-number
+                <el-input-number
                   class="input-number"
                   v-model="skuNum"
                   controls-position="right"
@@ -349,7 +349,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 import TypeNav from "@comps/TypeNav";
 import ImageList from "./ImageList/ImageList";
@@ -359,19 +359,24 @@ export default {
   name: "Detail",
   data() {
     return {
-      currentImgIndex: 0,
-      skuNum:1 // 当前选中图片的下标
+      currentImgIndex: 0, // 当前选中图片的下标
+      skuNum: 1, // 商品数量
     };
   },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
+    ...mapState({
+      cartList: (state) => state.shopcart.cartList,
+    }),
   },
   methods: {
-    ...mapActions(["getProductDetail","updateCartCount"]),
-    updateCurrentImgIndex(index){
-        this.currentImgIndex = index;
+    ...mapActions(["getProductDetail", "updateCartCount"]),
+    // 更新选中图片的下标
+    updateCurrentImgIndex(index) {
+      this.currentImgIndex = index;
     },
-        async addCart() {
+    // 加入购物车
+    async addCart() {
       try {
         // 发送请求，加入购物车
         // actions函数必须返回一个promise对象，才会等待它执行
@@ -379,14 +384,14 @@ export default {
           skuId: this.skuInfo.id,
           skuNum: this.skuNum,
         });
+
+        sessionStorage.setItem("cart", JSON.stringify(this.skuInfo));
         // 一旦加入购物车，跳转到加入购物车成功页面
         this.$router.push(`/addcartsuccess?skuNum=${this.skuNum}`);
       } catch (e) {
         console.log(e);
       }
     },
-
-
   },
   mounted() {
     this.getProductDetail(this.$route.params.id);
@@ -400,6 +405,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// 深度样式选择器 -- 选择子组件样式修改
+// less /deep/
+// css  >>>
+// /deep/ .el-input-number {
+//   width: 110px;
+// }
+// /deep/.el-input {
+//   width: 30px;
+// }
+// /deep/ .el-input__inner {
+//   width: 30px;
+// }
+
 .detail {
   .con {
     width: 1200px;
@@ -567,10 +585,22 @@ export default {
               position: relative;
               float: left;
               margin-right: 15px;
+              // 深度样式选择器 -- 选择子组件样式修改
+              // less /deep/
+              // css  >>>
+              // /deep/ .el-input-number {
+              //   width: 110px;
+              // }
+              // /deep/.el-input {
+              //   width: 30px;
+              // }
+              // /deep/ .el-input__inner {
+              //   width: 30px;
+              // }
 
-              .input-number {
-                width: 150px;
-              }
+              // .input-number {
+              //   width: 150px;
+              // }
 
               .itxt {
                 width: 38px;
